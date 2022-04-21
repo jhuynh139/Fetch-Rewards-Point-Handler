@@ -1,3 +1,5 @@
+**Source code is in the new source_code directory, apologies**
+
 Running The Web Service
 
 1. Download and install Java Development Kit 15 from
@@ -38,9 +40,5 @@ Running The Web Service
 	6.4. If you picked one of the POST methods, make sure to include the form parameters mentioned above
 		under the "Body" tab in "x-www-form-urlencoded" form by clicking the radio button and entering the
 		relevant information.
-
-7. startup.bat unpacks the FetchRewardsPointHandler.war file under apache-tomcat-8.5.78\webapps after deploying, and all of the code is visible
-	under apache-tomcat-8.5.78\webapps\FetchRewardsPointHandler\WEB-INF\classes\fetchrewards.
-
 
 :)
