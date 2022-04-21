@@ -1,3 +1,5 @@
+**Source code is under the Fetch-Rewards-Point-Handler/webapps/FetchRewardsPointHandler/WEB-INF/classes/fetchrewards/ directory **
+
 Running The Web Service
 
 1. Download and install Java Development Kit 15 from
