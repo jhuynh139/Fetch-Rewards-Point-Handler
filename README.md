@@ -1,3 +1,5 @@
+**Source code and unit testing are under source_code and unit_testing directories, respectively**
+
 Running The Web Service
 
 1. Download and install Java Development Kit 15 from
