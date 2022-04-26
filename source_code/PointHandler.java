@@ -1,8 +1,8 @@
 package fetchrewards;
 
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.PriorityQueue;
 import org.json.JSONObject;
 
@@ -10,11 +10,11 @@ public class PointHandler {
     /**
      * A Map of priority heaps to spend oldest points more readily, from specific payers/spenders.
      */
-    private final ConcurrentMap<String, PriorityQueue<Transaction>> committedTransactions;
+    private final Map<String, PriorityQueue<Transaction>> committedTransactions;
     /**
      * A Map of running point totals, so that deductions do not need to be processed before displaying totals.
      */
-    private final ConcurrentMap<String, Integer> runningPointTotals;
+    private final Map<String, Integer> runningPointTotals;
     /**
      * Deductions to process when a spend is requested.
      */
@@ -24,8 +24,8 @@ public class PointHandler {
      * Initializes the objects above to run the points logic.
      */
     public PointHandler(){
-        committedTransactions = new ConcurrentHashMap<>();
-        runningPointTotals = new ConcurrentHashMap<>();
+        committedTransactions = new HashMap<>();
+        runningPointTotals = new HashMap<>();
         totalPoints = 0;
         deductions = new ArrayList<>();
     }
@@ -87,7 +87,7 @@ public class PointHandler {
         }
         deductions.clear();
         
-        ConcurrentMap<String, Integer> spentPointTotals = new ConcurrentHashMap<>();
+        Map<String, Integer> spentPointTotals = new HashMap<>();
 
         while(pointsToSpend > 0){
             Transaction oldest = new Transaction("N/A", 0, "N/A");

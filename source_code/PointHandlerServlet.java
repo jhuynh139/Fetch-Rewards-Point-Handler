@@ -45,7 +45,8 @@ public class PointHandlerServlet extends HttpServlet {
 	        if (action.equals("add")){
 	            
 	        	if(request.getParameter("payer") == "" || request.getParameter("payer") == null || request.getParameter("timestamp") == "" ||request.getParameter("timestamp") == null) {
-	            	sendResponse(response, "No empty fields!!!");
+	            	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	        		sendResponse(response, "No empty fields!!!");
 	            	return;
 	            }
 	          
@@ -53,6 +54,7 @@ public class PointHandlerServlet extends HttpServlet {
 	            int points = Integer.parseInt(request.getParameter("points"));
 	            
 	            if (!validateTimestamp(request.getParameter("timestamp"))){
+	            	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	            	sendResponse(response, "Need a valid timestamp (ISO.INSTANT).");
 	            	return;
 	            }
@@ -65,10 +67,13 @@ public class PointHandlerServlet extends HttpServlet {
 	            status = pointHandler.spendPoints(points);
 	        }
 	    } catch(NumberFormatException e) {
-	    		sendResponse(response, "That's not a number!!!");
-	        	return;
+	    	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	    	sendResponse(response, "That's not a number!!!");
+	        return;
 	    }
-        
+        if(status.contains("Not enough points...")) {
+        	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
         sendResponse(response, status);
 	}
 	/**
