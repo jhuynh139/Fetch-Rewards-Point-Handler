@@ -1,5 +1,3 @@
-**Source code is in the new source_code directory, apologies**
-
 Running The Web Service
 
 1. Download and install Java Development Kit 15 from
