@@ -1,4 +1,4 @@
-**Source code and unit testing are under source_code and unit_testing directories, respectively**
+**Source code and unit testing are under source_code and unit_testing directories, respectively.**
 
 Running The Web Service
 
