@@ -43,7 +43,7 @@ public class TestPointHandlerServlet extends Mockito{
 		writer.flush();
 		assertTrue(stringWriter.toString().contains("No empty fields!!!"));
 		
-		verify(response).setStatus(400);
+		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 	/**
 	 * Asserts that "That's not a number!!!" is sent upon a non-parsable points parameter.
