@@ -25,6 +25,7 @@ public class TestPointHandlerServlet extends Mockito{
 	}
 	/**
 	 * Asserts that "No empty fields!!!" is sent upon empty parameters.
+	 * Also verifies that the HttpServletResponse.SC_BAD_REQUEST status is set.
 	 * @throws Exception I/O Exception from getWriter.
 	 */
 	@Test
@@ -41,9 +42,12 @@ public class TestPointHandlerServlet extends Mockito{
 		
 		writer.flush();
 		assertTrue(stringWriter.toString().contains("No empty fields!!!"));
+		
+		verify(response).setStatus(400);
 	}
 	/**
 	 * Asserts that "That's not a number!!!" is sent upon a non-parsable points parameter.
+	 * Also verifies that the HttpServletResponse.SC_BAD_REQUEST status is set.
 	 * @throws Exception I/O Exception from getWriter.
 	 */
 	@Test
@@ -63,9 +67,12 @@ public class TestPointHandlerServlet extends Mockito{
 		
 		writer.flush();
 		assertTrue(stringWriter.toString().contains("That's not a number!!!"));
+
+		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 	/**
 	 * Asserts that "Need a valid timestamp (ISO.INSTANT)." is sent upon wrongly formatted timestamp.
+	 * Also verifies that the HttpServletResponse.SC_BAD_REQUEST status is set.
 	 * @throws Exception I/O Exception from getWriter.
 	 */
 	@Test
@@ -85,6 +92,62 @@ public class TestPointHandlerServlet extends Mockito{
 		
 		writer.flush();
 		assertTrue(stringWriter.toString().contains("Need a valid timestamp (ISO.INSTANT)."));
+		
+		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	}
+	/**
+	 * Asserts that "Not enough points..." is sent when a negative transaction with a point total greater than the available number of points is sent. 
+	 * Also verifies that the HttpServletResponse.SC_BAD_REQUEST status is set.
+	 * @throws Exception I/O Exception from getWriter.
+	 */
+	@Test
+	public void testServletAddNotEnough() throws Exception{
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		
+		StringWriter stringWriter = new StringWriter();
+		PrintWriter writer = new PrintWriter(stringWriter);
+		when(response.getWriter()).thenReturn(writer);
+		
+		when(request.getRequestURI()).thenReturn("/add");
+		when(request.getParameter("points")).thenReturn("-2000");
+		when(request.getParameter("payer")).thenReturn("Venmo");
+		when(request.getParameter("timestamp")).thenReturn("2020-12-01T14:00:00Z");
+		
+		servlet.init(mock(ServletConfig.class));
+		
+		servlet.doPost(request, response);
+		
+		writer.flush();
+		assertTrue(stringWriter.toString().contains("Not enough points..."));
+		
+		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	}
+	/**
+	 * Asserts that "Not enough points..." is sent when a spend with a point total greater than the available number of points is sent.
+	 * Also verifies that the HttpServletResponse.SC_BAD_REQUEST status is set.
+	 * @throws Exception I/O Exception from getWriter.
+	 */
+	@Test
+	public void testServletSpendNotEnough() throws Exception{
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		
+		StringWriter stringWriter = new StringWriter();
+		PrintWriter writer = new PrintWriter(stringWriter);
+		when(response.getWriter()).thenReturn(writer);
+		
+		servlet.init(mock(ServletConfig.class));
+		
+		when(request.getRequestURI()).thenReturn("/spend");
+		when(request.getParameter("points")).thenReturn("2000");
+		
+		servlet.doPost(request, response);
+		
+		writer.flush();
+		assertTrue(stringWriter.toString().contains("Not enough points..."));
+		
+		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 	/**
 	 * Tests add and get by asserting that a transaction is posted and displayable.
