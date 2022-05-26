@@ -19,12 +19,13 @@ public class PointHandlerServlet extends HttpServlet {
 	/**
 	 * DateTime format that the time stamps need to conform to.
 	 */
-	private DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_INSTANT;
+	private DateTimeFormatter dateFormatter;
 	/**
 	 * Initializes the point handler.
 	 */
 	public void init(ServletConfig config) throws ServletException{
 		pointHandler = new PointHandler();
+		dateFormatter = DateTimeFormatter.ISO_INSTANT;
 	}
 	/**
 	 * Calls the point handler to get the current running point totals upon a GET.
