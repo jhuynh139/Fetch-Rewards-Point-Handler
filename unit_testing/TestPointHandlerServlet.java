@@ -33,11 +33,12 @@ public class TestPointHandlerServlet extends Mockito{
 		HttpServletRequest request = mock(HttpServletRequest.class);
 		HttpServletResponse response = mock(HttpServletResponse.class);
 		
-		when(request.getRequestURI()).thenReturn("/add");
-		
 		StringWriter stringWriter = new StringWriter();
 		PrintWriter writer = new PrintWriter(stringWriter);
 		when(response.getWriter()).thenReturn(writer);
+		
+		when(request.getRequestURI()).thenReturn("/add");
+		
 		servlet.doPost(request, response);
 		
 		writer.flush();
@@ -55,14 +56,15 @@ public class TestPointHandlerServlet extends Mockito{
 		HttpServletRequest request = mock(HttpServletRequest.class);
 		HttpServletResponse response = mock(HttpServletResponse.class);
 		
+		StringWriter stringWriter = new StringWriter();
+		PrintWriter writer = new PrintWriter(stringWriter);
+		when(response.getWriter()).thenReturn(writer);
+		
 		when(request.getRequestURI()).thenReturn("/add");
 		when(request.getParameter("points")).thenReturn("32a");
 		when(request.getParameter("payer")).thenReturn("Venmo");
 		when(request.getParameter("timestamp")).thenReturn("2020-11-01T14:00:00Z");
 		
-		StringWriter stringWriter = new StringWriter();
-		PrintWriter writer = new PrintWriter(stringWriter);
-		when(response.getWriter()).thenReturn(writer);
 		servlet.doPost(request, response);
 		
 		writer.flush();
@@ -80,14 +82,17 @@ public class TestPointHandlerServlet extends Mockito{
 		HttpServletRequest request = mock(HttpServletRequest.class);
 		HttpServletResponse response = mock(HttpServletResponse.class);
 		
+		StringWriter stringWriter = new StringWriter();
+		PrintWriter writer = new PrintWriter(stringWriter);
+		when(response.getWriter()).thenReturn(writer);
+		
+		servlet.init(mock(ServletConfig.class));
+		
 		when(request.getRequestURI()).thenReturn("/add");
 		when(request.getParameter("points")).thenReturn("300");
 		when(request.getParameter("payer")).thenReturn("Venmo");
 		when(request.getParameter("timestamp")).thenReturn("2020-14-01T14:00:00Z");
-
-		StringWriter stringWriter = new StringWriter();
-		PrintWriter writer = new PrintWriter(stringWriter);
-		when(response.getWriter()).thenReturn(writer);
+		
 		servlet.doPost(request, response);
 		
 		writer.flush();
@@ -109,12 +114,12 @@ public class TestPointHandlerServlet extends Mockito{
 		PrintWriter writer = new PrintWriter(stringWriter);
 		when(response.getWriter()).thenReturn(writer);
 		
+		servlet.init(mock(ServletConfig.class));
+		
 		when(request.getRequestURI()).thenReturn("/add");
 		when(request.getParameter("points")).thenReturn("-2000");
 		when(request.getParameter("payer")).thenReturn("Venmo");
 		when(request.getParameter("timestamp")).thenReturn("2020-12-01T14:00:00Z");
-		
-		servlet.init(mock(ServletConfig.class));
 		
 		servlet.doPost(request, response);
 		
@@ -162,12 +167,13 @@ public class TestPointHandlerServlet extends Mockito{
 		PrintWriter writer = new PrintWriter(stringWriter);
 		when(response.getWriter()).thenReturn(writer);
 		
+		servlet.init(mock(ServletConfig.class));
+		
 		when(request.getRequestURI()).thenReturn("/add");
 		when(request.getParameter("points")).thenReturn("2000");
 		when(request.getParameter("payer")).thenReturn("Venmo");
 		when(request.getParameter("timestamp")).thenReturn("2020-12-01T14:00:00Z");
 		
-		servlet.init(mock(ServletConfig.class));
 		servlet.doPost(request, response);
 		
 		writer.flush();
