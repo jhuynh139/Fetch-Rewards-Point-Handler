@@ -53,12 +53,8 @@ public class PointHandlerServlet extends HttpServlet {
 	        	String payer = request.getParameter("payer").toUpperCase();
 	            int points = Integer.parseInt(request.getParameter("points"));
 	            
-	            if (!validateTimestamp(request.getParameter("timestamp"))){
-	            	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-	            	sendResponse(response, "Need a valid timestamp (ISO.INSTANT).");
-	            	return;
-	            }
 	            String timestamp = request.getParameter("timestamp");
+	            dateFormatter.parse(timestamp);
 	            
 	            status = pointHandler.addTransaction(new Transaction(payer, points, timestamp));  
 	        } else if (action.equals("spend")){
@@ -70,24 +66,15 @@ public class PointHandlerServlet extends HttpServlet {
 	    	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	    	sendResponse(response, "That's not a number!!!");
 	        return;
-	    }
+	    } catch (DateTimeParseException e) {
+	    	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        	sendResponse(response, "Need a valid timestamp (ISO.INSTANT).");
+	    	return;
+		}
         if(status.contains("Not enough points...")) {
         	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
         sendResponse(response, status);
-	}
-	/**
-	 * Validates a time stamp to ISO.INSTANT standard.
-	 * @param timestamp String to validate.
-	 * @return True if the string parses into an ISO.INSTANT time stamp, false otherwise.
-	 */
-	private boolean validateTimestamp(String timestamp) {
-		try {
-			dateFormatter.parse(timestamp);
-		} catch (DateTimeParseException e) {
-			return false;
-		}
-		return true;
 	}
 	/**
 	 * Outputs messages to the client.
